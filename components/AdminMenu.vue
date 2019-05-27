@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import menu from '../config/menu';
+import menu from '@/config/menu';
 import AdminMenuItem from './AdminMenuItem';
 
 export default {

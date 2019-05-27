@@ -5,7 +5,7 @@
         <icon icon="loading" size="48px" mdi spin/>
       </div>
     </transition>
-    <template v-for="(row, i) in formFields">
+    <template v-for="(row, i) in fields">
       <template v-if="!inline && row.hasOwnProperty('title') && Array.isArray(row.fields)">
         <h2 :key="`title_${i}`">{{ row.title | translate }}</h2>
         <hr :key="`hr_${i}`">
@@ -118,7 +118,7 @@ export default {
         return {};
       },
     },
-    formFields: {
+    fields: {
       type: Array,
       default() {
         return [];
