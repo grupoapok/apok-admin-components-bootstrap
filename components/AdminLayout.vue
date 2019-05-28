@@ -20,7 +20,9 @@
             </b-row>
         </main>
 
-        <admin-footer></admin-footer>
+        <admin-footer>
+          <slot name="footer">This is the Footer</slot>
+        </admin-footer>
 
         <b-modal
                 :title="$t('dialogs.logout.title')"

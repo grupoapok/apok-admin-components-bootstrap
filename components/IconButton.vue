@@ -9,40 +9,47 @@
         v-if="icon && !right"
         :material-icon="materialIcon"
         :icon="icon"
-        :class="[!iconOnly && 'mr-2', materialIcon && 'md-18']"
+        :class="[materialIcon && 'md-18']"
       ></icon>
     </slot>
-    <slot></slot>
+    <span class="mx-2" v-if="hasContent">
+      <slot></slot>
+    </span>
     <slot name="right-icon">
       <icon
         v-if="icon && right"
         :material-icon="materialIcon"
         :icon="icon"
-        :class="[!iconOnly && 'ml-2', materialIcon && 'md-18']"
+        :class="[materialIcon && 'md-18']"
       ></icon>
     </slot>
   </b-button>
 </template>
 
 <script>
-import Icon from './Icon';
+  import Icon from './Icon';
 
-export default {
-  name: 'IconButton',
-  components: { Icon },
-  props: {
-    iconOnly: {
-      type: Boolean,
-      default: false,
+  export default {
+    name: 'IconButton',
+    components: { Icon },
+    props: {
+      iconOnly: {
+        type: Boolean,
+        default: false,
+      },
+      right: Boolean,
+      icon: {
+        type: String,
+        default: null,
+      },
+      materialIcon: Boolean,
     },
-    right: Boolean,
-    icon: {
-      type: String,
-      default: null,
-    },
-    materialIcon: Boolean,
-  },
-};
+    computed: {
+      hasContent() {
+        return this.$slots && this.$slots.default && this.$slots.default.length && this.$slots.default[0].text
+      }
+    }
+  };
 </script>
 
 <style scoped>

@@ -1,10 +1,23 @@
 <template>
   <div class="time-picker-container" @keyup.esc="showDialog = false">
-    <b-form-input type="time" :state="state" :value="time" class="w-100 d-block d-sm-none"
-                  :readonly="readonly"
-                  @input="$emit('input',$event)"/>
-    <b-form-input :value="time" :state="state" @click="openDialog" readonly v-bind="$attrs"
-                  class="w-100 d-none d-sm-block"/>
+    <b-form-input
+      type="time"
+      :state="state"
+      :value="time"
+      class="w-100 d-block d-sm-none"
+      :class="{'readonly': readonly}"
+      :readonly="readonly"
+      @input="$emit('input',$event)"
+    />
+    <b-form-input
+      :value="time"
+      :state="state"
+      @click="openDialog"
+      readonly
+      v-bind="$attrs"
+      class="w-100 d-none d-sm-block"
+      :class="{'readonly': readonly}"
+    />
     <div class="time-picker-dialog" v-if="showDialog" :style="dialogWidth">
       <button class="close" @click="showDialog = false">&times;</button>
       <b-container>
@@ -64,7 +77,7 @@
   import IconButton from './IconButton'
 
   export default {
-    name: "TimePicker",
+    name: "AdminFieldTimePicker",
     components: { IconButton, Icon },
     inheritAttrs: false,
     data() {
@@ -210,6 +223,12 @@
   .time-picker-container {
     flex-grow: 1;
     position: relative;
+    input[type="text"], input[type="time"] {
+      background: $input-bg !important;
+      &.readonly {
+        background: $input-disabled-bg !important;
+      }
+    }
     .close {
       position: absolute;
       top: 0;

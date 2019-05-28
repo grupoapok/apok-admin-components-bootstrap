@@ -1,7 +1,7 @@
 <template>
   <footer class="border-top py-3 bg-light">
     <b-container fluid>
-      This is footer
+      <slot>This is footer</slot>
     </b-container>
   </footer>
 </template>

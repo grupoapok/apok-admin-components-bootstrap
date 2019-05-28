@@ -22,3 +22,4 @@ fs.copyFileSync('./assets/_variables.scss', `${dest}/assets/_variables.scss`);
 mkdir(`${dest}/config`);
 console.log('Components Bootstrap - Installing default config files...');
 fs.copyFileSync('./index.js', `${dest}/config/components.js`);
+fs.copyFileSync('./vue.config.js', `${pwd}/vue.config.js`);

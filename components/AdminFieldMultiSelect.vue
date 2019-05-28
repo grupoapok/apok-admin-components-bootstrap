@@ -4,7 +4,7 @@
   >
     <div class="multi-select-input d-flex flex-row flex-wrap align-items-center">
       <span
-        class="selected-option d-inline-flex flex-row align-items-center"
+        class="selected-option d-inline-flex flex-row align-items-center h-100"
         v-for="(selected, i) in Array.from(selectedOptions)"
         :key="`selectedOption_${i}`"
       >
@@ -14,11 +14,11 @@
           @click.native="deleteOption(selected)"
           v-if="!readonly"
         />
-        {{ selected.text | translate }}
+        {{ selected.label | translate }}
       </span>
       <span
         class="text-secondary"
-        v-if="Array.from(selectedOptions).length < 1"
+        v-if="Array.from(selectedOptions).length === 0"
         @click="$refs.input.focus()"
       >
         {{ placeholder | translate }}
@@ -27,8 +27,12 @@
         type="text"
         ref="input"
         :readonly="readonly"
+        v-model="filter"
         @focus="showOptionsList"
         @keyup.esc="hideOptions($event)"
+        @keyup.down="changeHighlightedOption(1)"
+        @keyup.up="changeHighlightedOption(-1)"
+        @keydown.tab="chooseOption"
       />
     </div>
     <div
@@ -36,13 +40,15 @@
       :class="[showOptions && 'd-block', !showOptions && 'd-none']"
     >
       <div
-        v-for="(option, i) in availableOptions"
+        v-for="(option, i) in filteredOptions"
         :key="`option_${i}`"
         class="option"
+        :class="{'hovered': highlightedOption === i}"
         @click="select(option)"
+        @mouseover="highlightedOption = i"
         @keyup.esc.native="hideOptions($event)"
       >
-        {{ option.text | translate }}
+        {{ option.label | translate }}
       </div>
     </div>
   </div>
@@ -52,17 +58,24 @@
   import Icon from './Icon';
 
   export default {
-    name: 'MultiSelect',
+    name: 'AdminFieldMultiSelect',
     components: { Icon },
     data() {
       return {
         showOptions: false,
         selectedOptions: new Set(),
+        filter: null,
+        highlightedOption: -1
       };
     },
     props: {
       value: Array,
-      options: Array,
+      options: {
+        type: Array,
+        default(){
+          return [];
+        }
+      },
       state: {
         type: String,
         default: null
@@ -77,19 +90,52 @@
       },
     },
     computed: {
+      filteredOptions() {
+        if (this.filter) {
+          return this.availableOptions.filter(o => o.label.match(new RegExp(`${this.filter}.*`)))
+        }
+        return this.availableOptions
+      },
       availableOptions() {
         const selectedOptionsArr = Array.from(this.selectedOptions).map(so => so.value);
-        return this.options.filter(o => selectedOptionsArr.indexOf(o.value) === -1);
+        return this.processedOptions.filter(o => selectedOptionsArr.indexOf(o.value) === -1);
       },
+      processedOptions() {
+        return this.options.map(o => {
+          if (typeof(o) === 'object' && o.hasOwnProperty('value') && o.hasOwnProperty('label')) {
+            return o;
+          }
+          return {
+            label: `${o}`,
+            value: o
+          }
+        })
+      }
     },
     methods: {
+      chooseOption(e){
+        if (this.highlightedOption !== -1){
+          e.preventDefault();
+          this.select(this.filteredOptions[this.highlightedOption]);
+          this.$refs.input.focus();
+        }
+      },
+      changeHighlightedOption(inc){
+        this.highlightedOption = (this.highlightedOption + inc) % this.filteredOptions.length;
+        if (this.highlightedOption < 0){
+          this.highlightedOption += this.filteredOptions.length;
+        }
+      },
       doEmit() {
         const values = Array.from(this.selectedOptions).map(v => v.value);
         this.$emit('input', values);
-        this.showOptions = false;
+        this.hideOptions()
       },
       select(value) {
-        this.selectedOptions = this.selectedOptions.add(value);
+        const newSet = new Set();
+        this.selectedOptions.forEach(e => newSet.add(e));
+        newSet.add(value);
+        this.selectedOptions = newSet;
         this.doEmit();
       },
       deleteOption(selectedOption) {
@@ -107,18 +153,20 @@
           this.showOptions = true;
         }
       },
-      hideOptions(e) {
+      hideOptions() {
         this.showOptions = false;
-        e.target.blur();
+        this.filter = null;
+        this.highlightedOption = -1;
+        this.$refs.input.blur();
       },
       updateSelected(value) {
         if (value) {
           this.selectedOptions = new Set();
-          const optionsVals = this.options.map(o => o.value);
+          const optionsVals = this.processedOptions.map(o => o.value);
           value.forEach((v) => {
             const indexOfV = optionsVals.indexOf(v);
             if (indexOfV !== -1) {
-              this.selectedOptions.add(this.options[indexOfV]);
+              this.selectedOptions.add(this.processedOptions[indexOfV]);
             }
           });
         }
@@ -181,7 +229,7 @@
       .option {
         cursor: pointer !important;
         padding: .375rem .75rem;
-        &:hover {
+        &.hovered {
           background: lighten($primary, .5);
           color: color-yiq(lighten($primary, .5))
         }

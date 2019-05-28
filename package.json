@@ -1,6 +1,6 @@
 {
   "name": "@apok/admin-components-bootstrap",
-  "version": "1.0.1-rc.4",
+  "version": "1.0.1-rc.8",
   "description": "Bootstrap components for @apok/admin",
   "scripts": {
     "postinstall": "node install.js"
@@ -8,6 +8,7 @@
   "author": "Jose Carrero <jose@grupoapok.com>",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/vue-fontawesome": "^0.1.6",
     "bootstrap-vue": "^2.0.0-rc.20",
     "vue-select": "^3.1.0"
   },
