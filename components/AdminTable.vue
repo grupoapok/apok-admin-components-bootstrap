@@ -2,9 +2,11 @@
   <div>
     <b-row class="align-items-end">
       <b-col :cols="12" :sm="6" class="my-2 my-sm-0">
-        <router-link v-if="canCreate" :to="createRoute" is="icon-button" v-bind="createButtonProps">
-          {{ createButtonText | translate }}
-        </router-link>
+        <slot name="create_button">
+          <router-link v-if="canCreate" :to="createRoute" is="icon-button" v-bind="createButtonProps">
+            {{ createButtonText | translate }}
+          </router-link>
+        </slot>
         <b-button variant="info" v-if="filtersFields.length" @click="filtersActive = true" class="ml-2">
           <icon icon="filter"/>
         </b-button>
@@ -78,7 +80,7 @@
           </td>
         </tr>
 
-        <tr v-else v-for="(record, r) in items" :key="`${record[idField]}`">
+        <tr v-else v-for="(record, r) in items" :key="`${record[idField]}`" :class="{'table-danger' : record.deleting}">
           <slot
             v-for="(field, c) in tableFields"
             :data="record"
@@ -109,7 +111,8 @@
 </template>
 
 <script>
-  import camelCase from 'lodash/camelCase';
+  import camelCase from 'lodash.camelcase';
+  import upperFirst from "lodash.upperfirst";
   import AdminForm from './AdminForm';
   import AdminPagination from './AdminPagination';
   import Icon from './Icon';
@@ -230,10 +233,11 @@
         }
       },
       getFieldTitle(field) {
+        let title = field;
         if (typeof field === 'object') {
-          return this.$t(field.label || camelCase(field.key));
+          title = field.label || field.key;
         }
-        return camelCase(this.$t(field));
+        return upperFirst(camelCase(this.$t(title)));
       },
       getRecordField(record, field) {
         let fieldKey = field;
