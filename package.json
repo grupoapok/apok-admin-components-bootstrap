@@ -1,6 +1,6 @@
 {
   "name": "@apok/admin-components-bootstrap",
-  "version": "1.0.1-rc.9",
+  "version": "1.0.1-rc.10",
   "description": "Bootstrap components for @apok/admin",
   "scripts": {
     "postinstall": "node install.js"
