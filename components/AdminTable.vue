@@ -27,7 +27,7 @@
           v-if="totalPages > 1"
           :total-pages="totalPages"
           :current-page="currentPage"
-          @onPageChanged="$emit('onPageChanged', $event)"
+          @onPageChanged="$emit('pageChanged', $event)"
         ></admin-pagination>
       </b-col>
     </b-row>
@@ -99,7 +99,7 @@
               :class="['my-lg-0', {'mr-lg-2 mb-2': i < actions.length - 1}]"
               @click="$emit(`${a.action}`, record[idField])"
             >
-              <span v-if="!a.props.iconOnly">{{ a.text | translate }}</span>
+              {{ a.text | translate }}
             </icon-button>
           </td>
         </tr>
