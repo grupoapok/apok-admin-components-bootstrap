@@ -1,7 +1,7 @@
 <template>
     <div :is="!inline ? 'b-form-group' : 'div'"
          :class="['col-12 col-sm', `form-group-${type}`,state && `form-group-${type}-${state}`, inline && 'd-flex align-items-center mt-2 mt-sm-0 filter-group',$attrs.class]"
-         :label="$t(label)"
+         :label="(type !== 'checkbox') ? $t(label) : ''"
          :label-for="id"
          :state="state"
          :invalid-feedback="$t(error)"
@@ -60,14 +60,17 @@
                     :checked="value"
                     @input="emit"
             />
-            <b-form-checkbox-group
+            <b-form-checkbox
                     :state="state"
                     :disabled="readonly"
                     v-if="type === 'checkbox'"
                     v-bind="[$attrs.props, $attrs]"
                     :checked="value"
                     @input="emit"
-            />
+            >
+                {{ $t(label) }}
+            </b-form-checkbox>
+
             <admin-field-calendar
                     :state="state"
                     :readonly="readonly"

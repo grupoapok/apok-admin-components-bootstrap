@@ -17,9 +17,22 @@ const pwd = process.env.INIT_CWD;
 const dest = `${pwd}/src`;
 mkdir(`${dest}/assets`);
 console.log('Components Bootstrap - Installing default sass files...');
-fs.copyFileSync('./assets/main.scss', `${dest}/assets/main.scss`);
-fs.copyFileSync('./assets/_variables.scss', `${dest}/assets/_variables.scss`);
+let destination = `${dest}/assets/main.scss`;
+if (!fs.existsSync(destination)) {
+    fs.copyFileSync('./assets/main.scss', destination);
+}
+destination = `${dest}/assets/_variables.scss`;
+if (!fs.existsSync(destination)) {
+    fs.copyFileSync('./assets/_variables.scss', destination);
+}
+
 mkdir(`${dest}/config`);
 console.log('Components Bootstrap - Installing default config files...');
-fs.copyFileSync('./index.js', `${dest}/config/components.js`);
-fs.copyFileSync('./vue.config.js', `${pwd}/vue.config.js`);
+destination = `${dest}/config/components.js`;
+if (!fs.existsSync(destination)) {
+    fs.copyFileSync('./index.js', destination);
+}
+destination = `${pwd}/vue.config.js`;
+if (!fs.existsSync(destination)) {
+  fs.copyFileSync("./vue.config.js", destination);
+}

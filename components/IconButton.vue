@@ -46,7 +46,12 @@
     },
     computed: {
       hasContent() {
-        return this.$slots && this.$slots.default && this.$slots.default.length && this.$slots.default[0].text
+        if (this.$slots && this.$slots.default && this.$slots.default.length){
+          return this.$slots.default.some(slot => {
+            return !!slot.text || (slot.children && slot.children.length && slot.children.some(c => !!c.text))
+          })
+        }
+        return false;
       }
     }
   };
