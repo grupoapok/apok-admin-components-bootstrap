@@ -1,5 +1,5 @@
 <template>
-  <icon v-if="typeof icon === 'string'" :icon="icon" fixed-width></icon>
+  <icon v-if="typeof icon === 'string'" :icon="icon" icomoon fixed-width></icon>
   <icon v-else fixed-width v-bind="icon"></icon>
 </template>
 

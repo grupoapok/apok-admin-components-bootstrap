@@ -39,7 +39,6 @@ export default {
 <style lang="scss">
 .messages-container {
   position: fixed;
-  z-index: 99999;
   top: calc(57px + 1em);
   right: 1em;
   .alert-dismissible {
