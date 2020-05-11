@@ -1,0 +1,91 @@
+// AdminPagination Component
+#normal_pagination {
+  ul {
+    margin-bottom: 0 !important;
+    li {
+
+      &.page-item {
+
+        .page-link {
+          margin-left: 0;
+          border: none;
+
+        }
+
+        &:nth-child(1) {
+
+          a {
+            font-size: 2em;
+            margin-top: 0;
+          }
+
+        }
+
+        &:nth-child(2) {
+
+          a {
+            font-size: 2em;
+            margin-top: 0;
+          }
+
+        }
+        &:nth-last-child(1) {
+
+          a {
+            font-size: 2em;
+            margin-top: 0;
+          }
+
+        }
+        &:nth-last-child(2) {
+
+          a {
+            font-size: 2em;
+            margin-top: 0;
+          }
+
+        }
+
+        &.disabled {
+          margin-top: 0.2rem;
+
+        }
+
+      }
+      span {
+        font-size: 2em;
+
+        &:active {
+          background: none;
+          border: none;
+          color: $admin-primary;
+          box-shadow: none;
+
+        }
+
+      }
+
+      a {
+        font-size: 1.1em;
+        margin-top: 0.95rem;
+        padding: 0 0.2rem;
+
+        &:active {
+          background: none;
+          border: none;
+          color: $admin-primary;
+          box-shadow: none;
+          font-weight: 600;
+
+        }
+
+      }
+
+      &.active {
+        font-weight: 600;
+
+      }
+
+    }
+  }
+}

@@ -1,0 +1,106 @@
+// AdminTable Component
+#admin-table {
+
+  .table-extras {
+
+    .select-page {
+      color: $gray;
+
+      .custom-select {
+        color: $gray;
+
+        &:focus {
+          box-shadow: none;
+          border: none;
+
+        }
+
+      }
+
+    }
+
+    .create-button {
+
+    }
+
+  }
+
+  .table-container {
+
+    thead {
+
+      tr {
+
+        th {
+          border: none;
+          color: $gray;
+          font-size: 1.1em;
+          //font-weight: 600;
+
+        }
+
+      }
+
+    }
+
+    tbody {
+
+      tr {
+
+        &:hover {
+          background-color: $lightgray;
+
+        }
+
+        td {
+          color: $gray;
+          font-size: 1.1em;
+          border-top: 1px solid $lightgray;
+          border-bottom: 1px solid $lightgray;
+
+          &.actions {
+
+            span {
+              color: $admin-primary;
+
+              &:hover {
+                cursor: pointer;
+                color: $gray;
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    .table-striped{
+
+      tbody {
+
+        tr:nth-of-type(even) {
+          background-color: $lightgray;
+
+        }
+
+        tr:nth-of-type(odd) {
+          background: none;
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+.loading-spinner {
+  font-size: 2em;
+}

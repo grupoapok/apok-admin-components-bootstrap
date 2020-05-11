@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-container flex flex-grow-1">
-    <b-form-input type="date" :state="state" :value="value" class="w-100 d-block d-sm-none" :class="{'readonly': readonly}"/>
+
     <b-form-input
       type="text"
       :state="state"
@@ -71,7 +71,7 @@
   import Icon from "./Icon";
 
   export default {
-    name: "Calendar",
+    name: "AdminFieldCalendar",
     components: { Icon },
     data() {
       return {

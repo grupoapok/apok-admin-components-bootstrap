@@ -1,56 +1,7 @@
 <template>
   <div>
-
-    <template v-if="actionsTop">
-      <b-row :class="[showDivider && 'mt-3']" v-if="!inline">
-        <b-col v-if="!readOnly && (showSubmit || showCancel || showDeleteButton)" :class="buttonsRowClass">
-          <loading-button
-            type="submit"
-            v-if="showSubmit"
-            :variant="submitButtonVariant"
-            :icon-only="submitButtonIconOnly"
-            :loading="loading"
-            :icon="submitButtonIcon"
-            :class="[showCancel && 'mr-2']"
-            class="btn-submit"
-          ><span v-if="submitButton && !submitButtonIconOnly">{{ submitButton | translate }}</span></loading-button>
-          <icon-button
-            v-if="showCancel"
-            type="button"
-            :variant="cancelButtonVariant"
-            :icon-only="cancelButtonIconOnly"
-            :icon="cancelButtonIcon"
-            @click="$emit('cancel')"
-            class="btn-cancel"
-          ><span v-if="cancelButton && !cancelButtonIconOnly">{{ cancelButton | translate}}</span></icon-button>
-        </b-col>
-        <b-col v-if="readOnly && showBack" :class="buttonsRowClass">
-          <icon-button
-            v-if="showBack"
-            type="button"
-            :variant="backButtonVariant"
-            :icon="backButtonIcon"
-            :icon-only="backButtonIconOnly"
-            @click="$emit('cancel')"
-            class="btn-back"
-          ><span v-if="backButton && !backButtonIconOnly">{{ backButton | translate }}</span></icon-button>
-        </b-col>
-        <b-col class="align-self-end text-right" :class="buttonsRowClass">
-          <icon-button
-            v-if="showDeleteButton"
-            type="button"
-            :variant="deleteButtonVariant"
-            :icon="deleteButtonIcon"
-            :icon-only="deleteButtonIconOnly"
-            @click="$emit('delete')"
-            class="btn-delete"
-          ><span v-if="deleteButton && !deleteButtonIconOnly">{{ deleteButton | translate }}</span></icon-button>
-        </b-col>
-      </b-row>
-    </template>
-
     <b-form
-      v-on:keydown.enter.prevent=""
+      @keydown.enter.prevent="doSubmit"
       @submit.prevent="doSubmit"
       class="admin-form"
       style="position: relative"
@@ -78,7 +29,6 @@
               :readonly="loading || readOnly || field.loading || field.readOnly"
               :key="`field_${i}_${k}_${j}`"
               :error="errors[field.model]"
-              :id="field.model"
               v-bind="field"
               @clearError="() => clearError(field)"
               @input="$emit('fieldChanged')"
@@ -89,6 +39,7 @@
         <b-form-row
           v-else :key="`row_${i}`"
           :class="[inline && 'w-100', readOnly && 'px-5 p-2 read-only']"
+          class="flex-column justify-content-center"
         >
           <admin-form-field
             :inline="inline"
@@ -97,7 +48,6 @@
             :key="`field_${i}_${j}`"
             :readonly="loading || readOnly || field.loading || field.readOnly"
             :error="errors[field.model]"
-            :id="field.model"
             v-bind="field"
             @clearError="() => clearError(field)"
             @input="$emit('fieldChanged')"
@@ -111,26 +61,7 @@
               :icon="submitButtonIcon"
               :icon-only="submitButtonIconOnly"
               :class="[showCancel && 'mr-2']"
-              class="btn-submit"
             ><span v-if="submitButton && !submitButtonIconOnly">{{ submitButton | translate }}</span></loading-button>
-            <icon-button
-              v-if="showCancel"
-              type="button"
-              :variant="cancelButtonVariant"
-              :icon="cancelButtonIcon"
-              :icon-only="cancelButtonIconOnly"
-              @click="$emit('cancel')"
-              class="btn-cancel"
-            ><span v-if="cancelButton && !cancelButtonIconOnly">{{ cancelButton | translate}}</span></icon-button>
-            <icon-button
-              v-if="showDeleteButton"
-              type="button"
-              :variant="deleteButtonVariant"
-              :icon="deleteButtonIcon"
-              :icon-only="deleteButtonIconOnly"
-              @click="$emit('delete')"
-              class="btn-delete"
-            ><span v-if="deleteButton && !deleteButtonIconOnly">{{ deleteButton | translate}}</span></icon-button>
           </div>
         </b-form-row>
       </template>
@@ -150,7 +81,8 @@
         :class="actionsTop && 'pb-4'"
         v-if="!inline && showDivider">
       <template v-if="!actionsTop">
-        <b-row :class="[showDivider && 'mt-3']" v-if="!inline">
+        <b-row :class="[showDivider && 'mt-3']" v-if="!inline"
+               class="flex-column justify-content-center">
           <b-col v-if="!readOnly && (showSubmit || showCancel || showDeleteButton)" :class="buttonsRowClass">
             <loading-button
               type="submit"
@@ -160,39 +92,7 @@
               :loading="loading"
               :icon="submitButtonIcon"
               :class="[showCancel && 'mr-2']"
-              class="btn-submit"
             ><span v-if="submitButton && !submitButtonIconOnly">{{ submitButton | translate }}</span></loading-button>
-            <icon-button
-              v-if="showCancel"
-              type="button"
-              :variant="cancelButtonVariant"
-              :icon-only="cancelButtonIconOnly"
-              :icon="cancelButtonIcon"
-              @click="$emit('cancel')"
-              class="btn-cancel"
-            ><span v-if="cancelButton && !cancelButtonIconOnly">{{ cancelButton | translate}}</span></icon-button>
-          </b-col>
-          <b-col v-if="readOnly && showBack" :class="buttonsRowClass">
-            <icon-button
-              v-if="showBack"
-              type="button"
-              :variant="backButtonVariant"
-              :icon="backButtonIcon"
-              :icon-only="backButtonIconOnly"
-              @click="$emit('cancel')"
-              class="btn-back"
-            ><span v-if="backButton && !backButtonIconOnly">{{ backButton | translate }}</span></icon-button>
-          </b-col>
-          <b-col class="align-self-end text-right" :class="buttonsRowClass">
-            <icon-button
-              v-if="showDeleteButton"
-              type="button"
-              :variant="deleteButtonVariant"
-              :icon="deleteButtonIcon"
-              :icon-only="deleteButtonIconOnly"
-              @click="$emit('delete')"
-              class="btn-delete"
-            ><span v-if="deleteButton && !deleteButtonIconOnly">{{ deleteButton | translate }}</span></icon-button>
           </b-col>
         </b-row>
       </template>
@@ -204,12 +104,12 @@
 import { mapActions, mapState } from 'vuex';
 import AdminFormField from './AdminFormField';
 import Icon from './Icon';
-import IconButton from './IconButton';
+//import IconButton from './IconButton';
 import LoadingButton from './LoadingButton';
 
 export default {
-  name: 'AdminForm',
-  components: { Icon, IconButton, LoadingButton, AdminFormField },
+  name: 'AdminLogin',
+  components: { Icon, /*IconButton,*/ LoadingButton, AdminFormField },
   data() {
     return {};
   },
