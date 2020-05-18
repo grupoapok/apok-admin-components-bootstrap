@@ -1,6 +1,10 @@
 <template>
   <div class="calendar-container flex flex-grow-1">
+<<<<<<< HEAD:components/inputs/InputFormCalendar.vue
     <b-form-input @update="$emit('input', $event)" type="date" :state="state" :value="value" class="w-100 d-block d-sm-none" :class="{'readonly': readonly}"/>
+=======
+
+>>>>>>> develop:components/AdminFieldCalendar.vue
     <b-form-input
       type="text"
       :state="state"
@@ -70,7 +74,12 @@
   import moment from "moment";
 
   export default {
+<<<<<<< HEAD:components/inputs/InputFormCalendar.vue
     name: "InputFormCalendar",
+=======
+    name: "AdminFieldCalendar",
+    components: { Icon },
+>>>>>>> develop:components/AdminFieldCalendar.vue
     data() {
       return {
         internalStartDate: "",

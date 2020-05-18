@@ -6,12 +6,8 @@
 </template>
 
 <script>
-import Icon from './Icon';
-import IconButton from './IconButton';
-
 export default {
   name: 'LoadingButton',
-  components: { IconButton, Icon },
   props: {
     loading: {
       type: Boolean,

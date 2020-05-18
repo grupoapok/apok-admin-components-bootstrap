@@ -6,27 +6,44 @@
     v-on="$listeners"
   >
     <slot name="icon">
+<<<<<<< HEAD
       <icon-renderer icon="spinner" spin v-if="loading" class=""/>
       <icon-renderer
         v-if="!!icon && !right && !loading"
         :class="[icon.materialIcon && 'md-18']"
         v-bind="realIcon"
       />
+=======
+      <icon
+        v-if="icon && !right"
+        :material-icon="materialIcon"
+        :icon="icon"
+        :class="[!iconOnly && 'mr-2', materialIcon && 'md-18']"
+      ></icon>
+>>>>>>> develop
     </slot>
-    <span class="mx-2" v-if="hasContent">
-      <slot></slot>
-    </span>
+    <slot></slot>
     <slot name="right-icon">
+<<<<<<< HEAD
       <icon-renderer
         v-if="!!icon && right"
         :class="[icon.materialIcon && 'md-18']"
         v-bind="realIcon"
       />
+=======
+      <icon
+        v-if="icon && right"
+        :material-icon="materialIcon"
+        :icon="icon"
+        :class="[!iconOnly && 'ml-2', materialIcon && 'md-18']"
+      ></icon>
+>>>>>>> develop
     </slot>
   </b-button>
 </template>
 
 <script>
+<<<<<<< HEAD
   export default {
     name: 'IconButton',
     props: {
@@ -58,6 +75,26 @@
       }
     }
   };
+=======
+export default {
+  name: 'IconButton',
+  props: {
+    iconOnly: {
+      type: Boolean,
+      default: false,
+    },
+    right: Boolean,
+    icon: {
+      type: String,
+      default: null,
+    },
+    materialIcon: {
+      type: Boolean,
+      default: false
+    },
+  },
+};
+>>>>>>> develop
 </script>
 
 <style scoped>
