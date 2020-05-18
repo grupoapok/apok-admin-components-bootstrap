@@ -1,3 +1,4 @@
+/*
 const fs = require('fs');
 const path = require('path');
 
@@ -25,14 +26,4 @@ destination = `${dest}/assets/_variables.scss`;
 if (!fs.existsSync(destination)) {
     fs.copyFileSync('./assets/_variables.scss', destination);
 }
-
-mkdir(`${dest}/config`);
-console.log('Components Bootstrap - Installing default config files...');
-destination = `${dest}/config/components.js`;
-if (!fs.existsSync(destination)) {
-    fs.copyFileSync('./index.js', destination);
-}
-destination = `${pwd}/vue.config.js`;
-if (!fs.existsSync(destination)) {
-  fs.copyFileSync("./vue.config.js", destination);
-}
+*/

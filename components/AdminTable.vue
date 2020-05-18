@@ -3,36 +3,34 @@
     <b-row class="align-items-end">
       <b-col :cols="12" :sm="6" class="my-2 my-sm-0">
         <slot name="create_button">
-          <router-link v-if="canCreate" :to="createRoute" is="icon-button" v-bind="createButtonProps">
+          <router-link :to="createRoute" is="button-renderer" v-bind="createButtonProps" v-if="canCreate">
             {{ createButtonText | translate }}
           </router-link>
         </slot>
-        <b-button variant="info" v-if="filtersFields.length" @click="filtersActive = true" class="ml-2">
-          <icon icon="filter"/>
-        </b-button>
-        <b-button v-if="canReload" @click="$emit('refresh')" class="ml-2">
-          <icon icon="redo"/>
-        </b-button>
+        <button-renderer @click="filtersActive = true" class="ml-2" icon="filter" icon-only
+                         v-if="true || filtersFields.length" variant="info"/>
+        <button-renderer @click="$emit('refresh')" class="ml-2" icon="redo" icon-only v-if="canReload"/>
       </b-col>
 
       <b-col :cols="12" :sm="canCreate ? 6 : 12"
              class="d-flex flex-sm-row flex-column justify-content-end align-items-sm-center text-right"
              v-if="totalPages > 1 || canChangePageSize">
-        <b-form inline class="justify-content-end mr-sm-2">
+        <b-form class="justify-content-end mr-sm-2" inline>
           <label class="mr-2">Items per page</label>
-          <b-form-select :value="pageSize" @input="$emit('onChangePageSize',$event)"
-                         :options="[2,5,10,15,20]"></b-form-select>
+          <b-form-select :options="[2,5,10,15,20]"
+                         :value="pageSize"
+                         @input="$emit('onChangePageSize',$event)"/>
         </b-form>
-        <admin-pagination
-          v-if="totalPages > 1"
-          :total-pages="totalPages"
+        <pagination-renderer
           :current-page="currentPage"
+          :total-pages="totalPages"
           @onPageChanged="$emit('pageChanged', $event)"
-        ></admin-pagination>
+          v-if="totalPages > 1"
+        />
       </b-col>
     </b-row>
 
-    <transition name="fade">
+    <!--<transition name="fade">
       <div class="box mt-4" id="list-filters" v-if="filtersActive">
         <b-button variant="link" class="close_filters" @click="filtersActive = false">&times;</b-button>
         <admin-form
@@ -44,31 +42,34 @@
           @submit="$emit('filtersUpdated')"
         />
       </div>
-    </transition>
+    </transition>-->
 
     <div class="mt-2 table-responsive">
-      <table class="table" :class="{'table-hover': hover, 'table-striped': striped, 'table-bordered': bordered}">
+      <table :class="{'table-hover': hover, 'table-striped': striped, 'table-bordered': bordered}" class="table">
         <thead>
         <tr>
-          <th v-for="(field,i) in tableFields" :key="`field_header_${i}`">
+          <th :key="`field_header_${i}`" v-for="(field,i) in tableFields">
             <template v-if="typeof field === 'object' && field.sortable">
-              <icon-button class="sort-button" variant="link" :icon="sortIcon(field)" right
-                           @click="() => $emit('toggleOrder', field.key)">
+              <button-renderer :icon="sortIcon(field)"
+                               @click="() => $emit('toggleOrder', field.key)"
+                               class="sort-button"
+                               right
+                               variant="link">
                 {{ getFieldTitle(field) | capitalize}}
-              </icon-button>
+              </button-renderer>
             </template>
             <template v-else>
               {{ getFieldTitle(field) | capitalize}}
             </template>
           </th>
-          <th v-if="actions.length !== 0" class="collapsed"></th>
+          <th class="collapsed" v-if="actions.length !== 0"></th>
         </tr>
         </thead>
 
         <tbody v-if="loading">
         <tr>
           <td :colspan="tableFields.length + actions.length" class="text-center">
-            <icon icon="loading" size="48px" mdi spin></icon>
+            <icon icon="loading" mdi size="48px" spin></icon>
           </td>
         </tr>
         </tbody>
@@ -80,27 +81,26 @@
           </td>
         </tr>
 
-        <tr v-else v-for="(record, r) in items" :key="`${record[idField]}`" :class="{'table-danger' : record.deleting}">
-          <slot
-            v-for="(field, c) in tableFields"
-            :data="record"
-            :name="`${field.key || field}`"
-          >
-            <td :key="`field_${r}_${c}`">{{ getRecordField(record, field) }}</td>
-          </slot>
+        <tr :class="{'table-danger' : record.deleting}" :key="`${record[idField]}`" v-else v-for="(record, r) in items">
+            <td :key="`field_${r}_${c}`"
+                v-for="(field, c) in tableFields">
+              <slot :data="record" :name="`${field.key || field}`">
+              {{ getRecordField(record, field) }}
+              </slot>
+            </td>
 
           <td class="collapsed">
-            <icon-button
-              v-for="(a,i) in actions"
-              v-bind="a.props"
-              v-if="evalActionCondition(record, a)"
+            <button-renderer
+              :class="['my-lg-0', {'mr-lg-2 mb-2': i < actions.length - 1}]"
               :disabled="record.deleting"
               :key="`action_${r}_${i}`"
-              :class="['my-lg-0', {'mr-lg-2 mb-2': i < actions.length - 1}]"
               @click="$emit(`${a.action}`, record[idField])"
+              v-bind="a.props"
+              v-for="(a,i) in actions"
+              v-if="evalActionCondition(record, a)"
             >
               {{ a.text | translate }}
-            </icon-button>
+            </button-renderer>
           </td>
         </tr>
         </tbody>
@@ -113,10 +113,6 @@
 <script>
   import camelCase from 'lodash.camelcase';
   import upperFirst from "lodash.upperfirst";
-  import AdminForm from './AdminForm';
-  import AdminPagination from './AdminPagination';
-  import Icon from './Icon';
-  import IconButton from './IconButton';
 
   export default {
     name: "AdminTable",
@@ -125,7 +121,6 @@
         filtersActive: false,
       }
     },
-    components: { IconButton, Icon, AdminPagination, AdminForm },
     inheritAttrs: false,
     props: {
       hover: { type: Boolean, default: false },
@@ -274,7 +269,7 @@
   };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   td,
   th {
     &.collapsed {
@@ -318,6 +313,7 @@
       display: block;
       padding: 1.25rem;
     }
+
     .close_filters {
       text-decoration: none !important;
       position: absolute;

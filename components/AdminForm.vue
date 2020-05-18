@@ -2,7 +2,7 @@
   <b-form @submit.prevent="doSubmit" class="admin-form" style="position: relative">
     <transition name="fade">
       <div v-if="loading" class="loading-overlay">
-        <icon icon="loading" size="48px" mdi spin/>
+        <icon-renderer icon="loading" size="48px" mdi spin/>
       </div>
     </transition>
     <template v-for="(row, i) in fields">
@@ -36,13 +36,13 @@
     </template>
 
     <b-form-row>
-      <slot></slot>
+      <slot/>
     </b-form-row>
 
     <hr class="my-0" v-if="showDivider">
     <b-row :class="[showDivider && 'mt-3']">
       <b-col v-if="!readonly && (showSubmit || showCancel)" :class="buttonsRowClass">
-        <loading-button
+        <button-renderer
           type="submit"
           v-if="(submitButtonText || submitButtonIcon) && showSubmit"
           :variant="submitButtonVariant"
@@ -50,45 +50,47 @@
           :loading="loading"
           :icon="submitButtonIcon"
           :class="{'mr-2': showCancel}"
-        ><span v-if="submitButtonText && !submitButtonIconOnly">{{ submitButtonText | translate }}</span></loading-button>
-        <icon-button
+        ><span v-if="submitButtonText && !submitButtonIconOnly">{{ submitButtonText | translate }}</span></button-renderer>
+        <button-renderer
           v-if="(cancelButtonText || cancelButtonIcon) && showCancel"
           type="button"
           :variant="cancelButtonVariant"
           :icon-only="cancelButtonIconOnly"
           :icon="cancelButtonIcon"
           @click="$emit('cancel')"
-        ><span v-if="cancelButtonText && !cancelButtonIconOnly">{{ cancelButtonText | translate}}</span></icon-button>
+        ><span v-if="cancelButtonText && !cancelButtonIconOnly">{{ cancelButtonText | translate}}</span></button-renderer>
       </b-col>
       <b-col v-if="readonly && showBack" :class="buttonsRowClass">
-        <icon-button
+        <button-renderer
           v-if="(backButtonText || backButtonIcon) && showBack"
           type="button"
           :variant="backButtonVariant"
           :icon="backButtonIcon"
           :icon-only="backButtonIconOnly"
           @click="$emit('cancel')"
-        ><span v-if="backButtonText && !backButtonIconOnly">{{ backButtonText | translate }}</span></icon-button>
+        ><span v-if="backButtonText && !backButtonIconOnly">{{ backButtonText | translate }}</span></button-renderer>
       </b-col>
     </b-row>
   </b-form>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import AdminFormField from './AdminFormField';
-import Icon from './Icon';
-import IconButton from './IconButton';
-import LoadingButton from './LoadingButton';
+import AdminFormField from "./AdminFormField";
 
 export default {
   name: 'AdminForm',
-  components: { Icon, IconButton, LoadingButton, AdminFormField },
+  components: { AdminFormField },
   data() {
     return {};
   },
   props: {
     formVar: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    errors: {
       type: Object,
       default() {
         return {};
@@ -121,7 +123,6 @@ export default {
     backButtonIconOnly: {type: Boolean, default: false}
   },
   computed: {
-    ...mapState('messages',{ 'errors': 'fields' }),
     buttonsRowClass() {
       if (this.buttonsAlignment === 'center') {
         return 'text-center';
@@ -133,9 +134,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('messages', ['resetFields']),
     doSubmit() {
-      this.resetFields();
       this.$emit('submit');
     },
   }

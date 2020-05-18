@@ -8,13 +8,13 @@
         v-for="(selected, i) in Array.from(selectedOptions)"
         :key="`selectedOption_${i}`"
       >
-        <icon
+        <icon-renderer
           icon="times"
           class="delete-option mr-2"
           @click.native="deleteOption(selected)"
           v-if="!readonly"
         />
-        {{ selected.label | translate }}
+        {{ selected.text | translate }}
       </span>
       <span
         class="text-secondary"
@@ -48,18 +48,15 @@
         @mouseover="highlightedOption = i"
         @keyup.esc.native="hideOptions($event)"
       >
-        {{ option.label | translate }}
+        {{ option.text | translate }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import Icon from './Icon';
-
   export default {
-    name: 'AdminFieldMultiSelect',
-    components: { Icon },
+    name: 'InputFormMultiSelect',
     data() {
       return {
         showOptions: false,
@@ -102,7 +99,7 @@
       },
       processedOptions() {
         return this.options.map(o => {
-          if (typeof(o) === 'object' && o.hasOwnProperty('value') && o.hasOwnProperty('label')) {
+          if (typeof(o) === 'object' && o.hasOwnProperty('value') && o.hasOwnProperty('text')) {
             return o;
           }
           return {

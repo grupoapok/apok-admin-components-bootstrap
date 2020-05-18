@@ -23,18 +23,18 @@
       <b-container>
         <b-row>
           <b-col v-if="showHours">
-            <icon-button :variant="buttonsVariant" @click="increaseHours" icon-only block
-                         icon="chevron-up"></icon-button>
+            <button-renderer :variant="buttonsVariant" @click="increaseHours" icon-only block
+                         icon="chevron-up"/>
           </b-col>
 
           <b-col v-if="showMinutes">
-            <icon-button :variant="buttonsVariant" @click="increaseMinutes" icon-only block
-                         icon="chevron-up"></icon-button>
+            <button-renderer :variant="buttonsVariant" @click="increaseMinutes" icon-only block
+                         icon="chevron-up"/>
           </b-col>
 
           <b-col v-if="showSeconds">
-            <icon-button :variant="buttonsVariant" @click="increaseSeconds" icon-only block
-                         icon="chevron-up"></icon-button>
+            <button-renderer :variant="buttonsVariant" @click="increaseSeconds" icon-only block
+                         icon="chevron-up"/>
           </b-col>
         </b-row>
 
@@ -54,16 +54,16 @@
 
         <b-row>
           <b-col v-if="showHours">
-            <icon-button :variant="buttonsVariant" @click="decreaseHours" icon-only block
-                         icon="chevron-down"></icon-button>
+            <button-renderer :variant="buttonsVariant" @click="decreaseHours" icon-only block
+                         icon="chevron-down"/>
           </b-col>
           <b-col v-if="showMinutes">
-            <icon-button :variant="buttonsVariant" @click="decreaseMinutes" icon-only block
-                         icon="chevron-down"></icon-button>
+            <button-renderer :variant="buttonsVariant" @click="decreaseMinutes" icon-only block
+                         icon="chevron-down"/>
           </b-col>
           <b-col v-if="showSeconds">
-            <icon-button :variant="buttonsVariant" @click="decreaseSeconds" icon-only block
-                         icon="chevron-down"></icon-button>
+            <button-renderer :variant="buttonsVariant" @click="decreaseSeconds" icon-only block
+                         icon="chevron-down"/>
           </b-col>
         </b-row>
       </b-container>
@@ -73,12 +73,9 @@
 
 <script>
   import moment from 'moment'
-  import Icon from './Icon'
-  import IconButton from './IconButton'
 
   export default {
-    name: "AdminFieldTimePicker",
-    components: { IconButton, Icon },
+    name: "InputFormTimePicker",
     inheritAttrs: false,
     data() {
       return {

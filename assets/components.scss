@@ -1,37 +1,3 @@
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
-
-$mdi-font-path: "~@mdi/font/fonts" !default;
-@import '~@mdi/font/scss/materialdesignicons';
-
-@import './variables';
-
-body {
-
-}
-
-@mixin materialIconSize($size) {
-  font-size: $size;
-  width: $size;
-}
-
-.material-icons,.material-icons-outlined {
-  width: 24px;
-  vertical-align: middle;
-  &.md-18 {
-    @include materialIconSize(18px);
-  }
-  &.md-24 {
-    @include materialIconSize(24px);
-  }
-  &.md-36 {
-    @include materialIconSize(36px);
-  }
-  &.md-48 {
-    @include materialIconSize(48px);
-  }
-}
-
 .alert {
   max-width: 300px;
   max-height: 6em;

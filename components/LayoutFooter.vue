@@ -5,12 +5,8 @@
     </b-container>
   </footer>
 </template>
-
 <script>
-export default {
-  name: 'AdminFooter',
-};
+  export default {
+    name: 'LayoutFooter',
+  }
 </script>
-
-<style scoped lang="scss">
-</style>

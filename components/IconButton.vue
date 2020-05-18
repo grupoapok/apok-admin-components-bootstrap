@@ -1,37 +1,34 @@
 <template>
   <b-button
-    :class="[materialIcon && 'd-inline-flex align-items-center']"
+    :disabled="loading"
+    :class="[icon.materialIcon && 'd-inline-flex align-items-center']"
     v-bind="$attrs"
     v-on="$listeners"
   >
     <slot name="icon">
-      <icon
-        v-if="icon && !right"
-        :material-icon="materialIcon"
-        :icon="icon"
-        :class="[materialIcon && 'md-18']"
-      ></icon>
+      <icon-renderer icon="spinner" spin v-if="loading" class=""/>
+      <icon-renderer
+        v-if="!!icon && !right && !loading"
+        :class="[icon.materialIcon && 'md-18']"
+        v-bind="realIcon"
+      />
     </slot>
     <span class="mx-2" v-if="hasContent">
       <slot></slot>
     </span>
     <slot name="right-icon">
-      <icon
-        v-if="icon && right"
-        :material-icon="materialIcon"
-        :icon="icon"
-        :class="[materialIcon && 'md-18']"
-      ></icon>
+      <icon-renderer
+        v-if="!!icon && right"
+        :class="[icon.materialIcon && 'md-18']"
+        v-bind="realIcon"
+      />
     </slot>
   </b-button>
 </template>
 
 <script>
-  import Icon from './Icon';
-
   export default {
     name: 'IconButton',
-    components: { Icon },
     props: {
       iconOnly: {
         type: Boolean,
@@ -39,12 +36,18 @@
       },
       right: Boolean,
       icon: {
-        type: String,
+        type: [String, Object],
         default: null,
       },
-      materialIcon: Boolean,
+      loading: Boolean,
     },
     computed: {
+      realIcon() {
+        if (typeof this.icon === 'string') {
+          return { icon: this.icon }
+        }
+        return this.icon
+      },
       hasContent() {
         if (this.$slots && this.$slots.default && this.$slots.default.length){
           return this.$slots.default.some(slot => {

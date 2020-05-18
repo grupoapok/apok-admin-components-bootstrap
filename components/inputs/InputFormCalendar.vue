@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-container flex flex-grow-1">
-    <b-form-input type="date" :state="state" :value="value" class="w-100 d-block d-sm-none" :class="{'readonly': readonly}"/>
+    <b-form-input @update="$emit('input', $event)" type="date" :state="state" :value="value" class="w-100 d-block d-sm-none" :class="{'readonly': readonly}"/>
     <b-form-input
       type="text"
       :state="state"
@@ -13,12 +13,12 @@
       @keyup.esc.native="show = false"
     />
     <div :class="['calendar-popup', show && 'd-block open']">
-      <button type="button" class="close mr-2" aria-label="Close" @click="show = false">
+      <button-renderer type="button" class="close mr-2" aria-label="Close" @click="show = false">
         <span aria-hidden="true">&times;</span>
-      </button>
+      </button-renderer>
       <div class="d-flex flex-row mt-4 align-items-center px-2">
         <a class="btn btn-link month_nav" @click="addMonth(-1)" v-if="canSelectMonth">
-          <icon icon="angle-left"></icon>
+          <icon-renderer icon="angle-left"/>
         </a>
         <b-select
           v-if="canSelectMonth"
@@ -41,7 +41,7 @@
         <span v-else class="yearSelector text-left font-weight-bold pl-2"
         >{{ startDate.format('YYYY') | translate }}</span>
         <a class="btn btn-link month_nav" @click="addMonth(1)" v-if="canSelectMonth">
-          <icon icon="angle-right"></icon>
+          <icon-renderer icon="angle-right"/>
         </a>
       </div>
       <table class="table">
@@ -68,11 +68,9 @@
 
 <script>
   import moment from "moment";
-  import Icon from "./Icon";
 
   export default {
-    name: "Calendar",
-    components: { Icon },
+    name: "InputFormCalendar",
     data() {
       return {
         internalStartDate: "",
