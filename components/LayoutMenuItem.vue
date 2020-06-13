@@ -8,25 +8,22 @@
         class="parent menu-item"
         is="b-nav-item"
         v-b-toggle="keyId">
-        <admin-menu-item-icon v-if="item.icon" :icon="item.icon"/>
-        <span v-if="showText || !item.icon" class="menu-item-text">{{ item.label | translate }}</span>
+        <icon-renderer class="mr-2" v-if="item.icon" v-bind="item.icon"/>
+        <span v-if="showText || !item.icon" class="menu-item-text">{{ item.title | translate }}</span>
       </a>
 
-      <div class="pl-3 subchilds w-100">
+      <div class="subchilds w-100">
         <b-collapse
           :id="keyId"
           role="tabpanel"
           :class="{'flex-column': vertical}">
 
-          <admin-menu-item
+          <layout-menu-item
             v-for="(child, i) in item.children"
             :key="`subchild_${i}`"
             :keyId="`${keyId}_subchild_${i}`"
             class="w-100 subchild"
-            :item="child">
-
-          </admin-menu-item>
-
+            :item="child"/>
         </b-collapse>
       </div>
     </template>
@@ -38,26 +35,15 @@
       :href="item.href"
       class="menu-item"
     >
-      <admin-menu-item-icon v-if="item.icon" :icon="item.icon"/>
+      <icon-renderer class="mr-2" v-if="item.icon" v-bind="item.icon"/>
       <span v-if="showText || !item.icon" class="menu-item-text">{{ item.label | translate }}</span>
-      <ul v-if="item.children && item.children.length" class="nav" :class="{'flex-column': vertical}">
-        <admin-menu-item
-          v-for="(child, i) in item.children"
-          :key="`subchild_${i}`"
-          :item="child">
-        </admin-menu-item>
-      </ul>
-
     </router-link>
 
   </div>
 </template>
 <script>
-  import AdminMenuItemIcon from './AdminMenuItemIcon'
-
   export default {
-    name: 'AdminMenuItem',
-    components: { AdminMenuItemIcon },
+    name: 'LayoutMenuItem',
     props: {
       vertical: {
         type: Boolean,
@@ -79,17 +65,6 @@
         default: true,
       },
     },
-    computed: {
-      isComponent() {
-        if (this.subMenu) {
-          return 'b-dropdown-item';
-        }
-        if (this.item.children && this.item.children.length) {
-          return 'b-nav-item-dropdown';
-        }
-        return 'b-nav-item';
-      },
-    },
   };
 </script>
 <style scoped lang="scss">
@@ -97,9 +72,6 @@
     a {
       max-height: 2.5rem;
       overflow: hidden;
-      .menu-item-text {
-        margin-left: 1rem;
-      }
     }
   }
 </style>
