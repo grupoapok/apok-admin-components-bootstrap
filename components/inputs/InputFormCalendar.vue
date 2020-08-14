@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-container flex flex-grow-1">
-    <b-form-input @update="$emit('input', $event)" type="date" :state="state" :value="value" class="w-100 d-block d-sm-none" :class="{'readonly': readonly}"/>
+<!--    <b-form-input @update="$emit('input', $event)" type="date" :state="state" :value="value" class="w-100 d-block d-sm-none" :class="{'readonly': readonly}"/>-->
     <b-form-input
       type="text"
       :state="state"
@@ -24,22 +24,22 @@
           v-if="canSelectMonth"
           class="monthSelector flex-fill"
           :options="monthsOptions"
-          :value="startDate.month()"
+          :value="startDate.getMonth()"
           @change="changeMonth"
         />
         <span
           class="monthSelector text-right font-weight-bold pr-2"
           v-else
-        >{{ monthsNames[startDate.month()] | translate }}</span>
+        >{{ monthsNames[startDate.getMonth()] | translate }}</span>
         <b-select
           class="yearSelector flex-fill"
           :options="yearsOptions"
           v-if="canSelectYear"
-          :value="startDate.year()"
+          :value="startDate.getFullYear()"
           @change="changeYear"
         />
         <span v-else class="yearSelector text-left font-weight-bold pl-2"
-        >{{ startDate.format('YYYY') | translate }}</span>
+        >{{ formatDate(startDate, 'yyyy') | translate }}</span>
         <a class="btn btn-link month_nav" @click="addMonth(1)" v-if="canSelectMonth">
           <icon-renderer icon="angle-right"/>
         </a>
@@ -55,9 +55,9 @@
           <td
             v-for="(d,j) in w"
             :key="`dia_${i}_${j}`"
-            :class="['text-center day', d.format(format) === value && 'active', isOffMonth(d) && 'off-month']"
+            :class="['text-center day', formatDate(d, format) === value && 'active', isOffMonth(d) && 'off-month']"
             @click="selectDate(d)"
-          >{{ d.format("DD") }}
+          >{{ formatDate(d, 'dd') }}
           </td>
         </tr>
         </tbody>
@@ -67,18 +67,25 @@
 </template>
 
 <script>
-  import moment from "moment";
+  import {
+    getUnixTime,
+    add,
+    setDay,
+    format as FNSformat,
+    set,
+    getMonth
+  } from "date-fns";
 
   export default {
     name: "InputFormCalendar",
     data() {
       return {
+        value: new Date(),
         internalStartDate: "",
         show: false
       };
     },
     props: {
-      value: String,
       readonly: Boolean,
       state: {
         type: String,
@@ -95,13 +102,13 @@
       format: {
         type: String,
         default() {
-          return "YYYY-MM-DD";
+          return "yyyy-MM-dd";
         }
       },
       displayFormat: {
         type: String,
         default() {
-          return "DD/MM/YYYY";
+          return "dd/MM/yyyy";
         }
       },
       daysNames: {
@@ -141,7 +148,7 @@
     computed: {
       formattedValue() {
         if (this.value) {
-          return moment(this.value).format(this.displayFormat);
+          return FNSformat(this.value, this.displayFormat);
         }
         return null;
       },
@@ -149,27 +156,24 @@
         return this.monthsNames.map((m, i) => ({ value: i, text: this.$t(m) }));
       },
       yearsOptions() {
-        const currentYear = moment(this.internalStartDate).year();
+        const currentYear = new Date(this.internalStartDate).getFullYear();
         let startYear = currentYear - 100;
         const years = [];
         while (startYear <= currentYear) {
           years.push(startYear);
-          startYear += 1;
+          startYear++;
         }
         return years;
       },
       dates() {
         const month = [];
-        let start = moment(this.startDate)
-          .day(0)
-          .unix();
-        const end = moment(this.endDate)
-          .day(6)
-          .unix();
+        let start = getUnixTime(setDay(new Date(this.startDate), 0));
+        let end = getUnixTime(setDay(new Date(this.endDate), 6));
+
         while (start < end) {
           const week = [];
-          for (let d = 0; d < 7; d += 1) {
-            week.push(moment(start * 1000));
+          for (let d = 0; d < 7; d++ ) {
+            week.push(new Date(start * 1000));
             start += 86400;
           }
           month.push(week);
@@ -177,17 +181,19 @@
         return month;
       },
       startDate() {
-        return moment(this.internalStartDate)
-          .set("date", 1)
-          .set("hour", 0)
-          .set("minute", 0)
-          .set("second", 0)
-          .set("millisecond", 0);
+        return set( new Date(this.internalStartDate), {
+          date: 1,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          milliseconds: 0,
+        })
       },
       endDate() {
-        return moment(this.startDate)
-          .add(1, "months")
-          .subtract(1, "days");
+        return add(new Date(this.startDate), {
+          months: 1,
+          days: -1,
+        })
       }
     },
     watch: {
@@ -197,6 +203,9 @@
       }
     },
     methods: {
+      formatDate(date, format) {
+        return FNSformat(date, format);
+      },
       showCalendar() {
         this.show = !this.readonly && true;
       },
@@ -208,32 +217,36 @@
         }
       },
       selectDate(date) {
-        this.$emit("input", date.format(this.format));
+        this.$emit("date-selected", FNSformat(date, this.format));
+        this.value = date;
         this.show = false;
       },
       addMonth(n) {
         this.updateInternalStartDate(
-          moment(this.internalStartDate)
-            .add(n, "months")
-            .format(this.format)
+          FNSformat(
+            add( new Date(this.internalStartDate), { months: n }),
+            this.format)
         );
       },
       changeMonth(n) {
         this.updateInternalStartDate(
-          moment(this.internalStartDate)
-            .month(n)
-            .format(this.format)
+          FNSformat(
+            set( new Date(this.internalStartDate), { month: n }),
+            this.format)
         );
       },
       changeYear(n) {
         this.updateInternalStartDate(
-          moment(this.internalStartDate)
-            .year(n)
-            .format(this.format)
+          FNSformat(
+            set( new Date(this.internalStartDate), { year: n }),
+            this.format)
         );
       },
       isOffMonth(d) {
-        return d.month() !== moment(this.internalStartDate, this.format).month()
+        return getMonth(d) !== getMonth(this.internalStartDate)
+      },
+      sayHi() {
+        alert('hi')
       }
     }
   };

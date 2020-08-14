@@ -9,33 +9,37 @@
          :description="$t($attrs.description)"
     >
         <b-input-group>
+          <template v-if="hasPrepend">
             <b-input-group-prepend
-                    is-text
-                    v-if="hasPrepend"
-                    v-for="(p,i) in $attrs.prepend"
-                    :key="`prepend_${i}`"
+              is-text
+              v-for="(p,i) in $attrs.prepend"
+              :key="`prepend_${i}`"
             >
-                <icon v-bind="p" v-if="typeof p === 'object' && p.hasOwnProperty('icon')"/>
-                <span v-else>{{ p }}</span>
+              <icon v-bind="p" v-if="typeof p === 'object' && p.hasOwnProperty('icon')"/>
+              <span v-else>{{ p }}</span>
             </b-input-group-prepend>
+          </template>
+
 
             <component
               :is="`form-input-${type}-renderer`" v-bind="[$attrs.props, $attrs, $props]"
               :value="value"
               @input="emit"
             />
+          <template v-if="hasAppend">
             <b-input-group-append
-                    is-text
-                    v-if="hasAppend"
-                    v-for="(p,i) in $attrs.append"
-                    :key="`append_${i}`"
+              is-text
+              v-for="(p,i) in $attrs.append"
+              :key="`append_${i}`"
             >
-                <icon v-bind="p" v-if="typeof p === 'object' && p.hasOwnProperty('icon')"/>
-                <span v-else>{{ p }}</span>
+              <icon v-bind="p" v-if="typeof p === 'object' && p.hasOwnProperty('icon')"/>
+              <span v-else>{{ p }}</span>
             </b-input-group-append>
             <b-input-group-append v-if="loading" is-text>
-                <icon-renderer icon="spinner" spin/>
+              <icon-renderer icon="spinner" spin/>
             </b-input-group-append>
+          </template>
+
 
         </b-input-group>
     </div>

@@ -1,10 +1,11 @@
 <template>
-  <b-navbar toggleable="xl" id="navbar" class="border-bottom">
+  <b-navbar toggleable="sm" id="navbar" class="border-bottom">
     <b-navbar-toggle target="nav_collapse"/>
 
     <router-link is="b-navbar-brand" :to="{ name: 'Home' }">
-      <span v-if="expanded">{{ title }}</span>
-      <span v-else>{{ shortTitle }}</span>
+      <span v-if="expanded">{{ navbarProps.title }}</span>
+      <span v-else>{{ navbarProps.title }}</span>
+<!--  <span v-else>{{ navbarProps.shortTitle }} </span>-->
     </router-link>
 
     <b-navbar-nav v-if="canToggleSidebar" class="d-none d-sm-block">
@@ -40,6 +41,16 @@
   export default {
     name: 'LayoutNavbar',
     props: {
+      navbarProps: {
+        title: {
+          type: String,
+          default: 'Apok-admin'
+        },
+        shortTitle: {
+          type: String,
+          default: 'Admin'
+        },
+      },
       user: {
         type: Object,
         default() {
@@ -50,14 +61,6 @@
       canToggleSidebar: {
         type: Boolean,
         default: true,
-      },
-      title: {
-        type: String,
-        default: 'Admin'
-      },
-      shortTitle: {
-        type: String,
-        default: 'A'
       },
       locales: {
         type: Array,

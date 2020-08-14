@@ -20,6 +20,7 @@ import LayoutMenuItem from "./components/LayoutMenuItem";
 import LayoutNavBar from "./components/LayoutNavBar";
 import Messages from "./components/Messages";
 import Pagination from "./components/Pagination";
+import Dashboard from "./components/Dashboard";
 
 Vue.use(BootstrapVue);
 
@@ -52,6 +53,7 @@ const renderers = {
   'FormInputCalendarRenderer': InputFormCalendar,
   'FormInputTimeRenderer': InputFormTimePicker,
   'FormInputMultiSelectRenderer': InputFormMultiSelect,
+  'DashboardRenderer': Dashboard,
 };
 
 const BootstrapAdminComponents = {

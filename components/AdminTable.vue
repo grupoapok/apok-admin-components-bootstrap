@@ -90,17 +90,19 @@
           </td>
 
           <td class="collapsed">
-            <button-renderer
-              :class="['my-lg-0', {'mr-lg-2 mb-2': i < actions.length - 1}]"
-              :disabled="record.deleting"
-              :key="`action_${r}_${i}`"
-              @click="$emit(`${a.action}`, record[idField])"
-              v-bind="a.props"
-              v-for="(a,i) in actions"
-              v-if="evalActionCondition(record, a)"
-            >
-              {{ a.text | translate }}
-            </button-renderer>
+            <template v-for="(a,i) in filteredActions">
+              <button-renderer
+                :class="['my-lg-0', {'mr-lg-2 mb-2': i < filteredActions.length - 1}]"
+                :disabled="record.deleting"
+                :key="`action_${r}_${i}`"
+                @click="$emit(`${a.action}`, record[idField])"
+                v-bind="a.props">
+                <!--v-if="evalActionCondition(record, a)"-->
+
+                {{ a.text | translate }}
+              </button-renderer>
+            </template>
+
           </td>
         </tr>
         </tbody>
@@ -194,11 +196,13 @@
         }
         return this.fields;
       },
+      filteredActions() {
+        return this.items.filter((record) => {
+          return this.evalActionCondition(record, this.action)
+        });
+      }
     },
     methods: {
-      evalActionConditions(record, action) {
-
-      },
       evalActionCondition(record, action) {
         if (!action.condition) {
           return true

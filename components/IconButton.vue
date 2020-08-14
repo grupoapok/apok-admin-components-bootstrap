@@ -37,7 +37,7 @@
       right: Boolean,
       icon: {
         type: [String, Object],
-        default: null,
+        default: '',
       },
       loading: Boolean,
     },

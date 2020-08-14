@@ -1,16 +1,15 @@
 <template>
   <div role="tablist">
     <template v-if="item.children && item.children.length">
-      <a
+      <b-nav-item
         v-on="$listeners"
         href="#"
         role="tab"
         class="parent menu-item"
-        is="b-nav-item"
         v-b-toggle="keyId">
         <icon-renderer class="mr-2" v-if="item.icon" v-bind="item.icon"/>
-        <span v-if="showText || !item.icon" class="menu-item-text">{{ item.title | translate }}</span>
-      </a>
+        <span v-if="showText" class="menu-item-text">{{ item.title | translate }}</span>
+      </b-nav-item>
 
       <div class="subchilds w-100">
         <b-collapse
@@ -23,7 +22,8 @@
             :key="`subchild_${i}`"
             :keyId="`${keyId}_subchild_${i}`"
             class="w-100 subchild"
-            :item="child"/>
+            :item="child"
+            :show-text="showText"/>
         </b-collapse>
       </div>
     </template>
@@ -34,9 +34,10 @@
       :to="item.to"
       :href="item.href"
       class="menu-item"
+      active
     >
       <icon-renderer class="mr-2" v-if="item.icon" v-bind="item.icon"/>
-      <span v-if="showText || !item.icon" class="menu-item-text">{{ item.label | translate }}</span>
+      <span v-if="showText" class="menu-item-text">{{ item.label | translate }}</span>
     </router-link>
 
   </div>
