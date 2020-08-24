@@ -55,8 +55,11 @@
 </template>
 
 <script>
+  import InputMixin from "./InputMixin";
+
   export default {
     name: 'InputFormMultiSelect',
+    mixins: [InputMixin],
     data() {
       return {
         showOptions: false,
