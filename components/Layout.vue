@@ -1,25 +1,33 @@
 <template>
   <div class="d-flex flex-column" id="admin-layout">
 
+    <messages-renderer
+      :messages="messages"
+      @messageDismissed="(m) => $emit('messageDismissed', m)"
+    />
+
     <layout-navbar-renderer
       :expanded="sidebarExpanded"
       :user="user"
-      @sidebarToggled="$emit('sidebarToggled')"
+      @sidebarToggled="$emit('toggle-sidebar')"
+      :navbarProps="navbarProps"
     />
 
     <main class="container-fluid d-flex flex-column flex-fill">
       <b-row class="flex-grow-1">
-        <div :class="[ sidebarExpanded && 'expanded' ]" class="d-none d-xl-block" id="sidebar">
-          <menu-renderer :expanded="sidebarExpanded" :items="menu" pills vertical/>
+        <div :class="[ sidebarExpanded && 'expanded' ]" class="d-sm-block" id="sidebar">
+          <menu-renderer :expanded="sidebarExpanded" :items="menu" :vertical="true"/>
         </div>
-        <div id="main_content">
-          <slot></slot>
+        <div class="container-fluid" id="main_content">
+          <slot>
+            <p>Main content</p>
+          </slot>
         </div>
       </b-row>
     </main>
 
-    <layout-footer-renderer>
-      <slot name="footer">Footer Here</slot>
+    <layout-footer-renderer :footerProps="footerProps">
+      <slot name="footer">This is the Footer</slot>
     </layout-footer-renderer>
   </div>
 </template>
@@ -33,22 +41,20 @@
       };
     },
     props: {
+      navbarProps: Object,
+      footerProps: Object,
       menu: {
         type: Array,
         default() {
           return [];
         }
       },
+      messages: {
+        type: Array,
+        default: () => []
+      },
       user: Object,
       sidebarExpanded: Boolean,
-      title: {
-        type: String,
-        default: 'Admin'
-      },
-      shortTitle: {
-        type: String,
-        default: 'A'
-      }
     },
   }
 </script>
@@ -62,9 +68,8 @@
       transition: all .5s;
 
       &.expanded {
-        width: 10%;
+        width: 15%;
       }
-
       padding: 1em 0 0;
     }
 
@@ -72,7 +77,6 @@
       flex-grow: 1;
       flex-basis: 83.33333%;
       padding: 1em 0;
-      max-width: 100vw;
     }
   }
 </style>

@@ -72,7 +72,7 @@
 </template>
 
 <script>
-  import moment from 'moment'
+  import { format } from 'date-fns'
 
   export default {
     name: "InputFormTimePicker",
@@ -135,11 +135,11 @@
         return this.format.indexOf("m") !== -1
       },
       time() {
-        const time = new moment();
-        time.hours(this.model.hours);
-        time.minutes(this.model.minutes);
-        time.seconds(this.model.seconds);
-        return time.format(this.format)
+        const time = new Date();
+        time.setHours(this.model.hours);
+        time.setMinutes(this.model.minutes);
+        time.setSeconds(this.model.seconds);
+        return format(time, this.format)
       },
       dialogWidth() {
         const colWidth = 75;
@@ -176,10 +176,10 @@
       },
       updateModel(val) {
         if (val) {
-          const time = new moment(val, this.format)
-          this.model.hours = time.hours()
-          this.model.minutes = time.minutes()
-          this.model.seconds = time.seconds()
+          const time = new Date(val);
+          this.model.hours = time.getHours();
+          this.model.minutes = time.getMinutes();
+          this.model.seconds = time.getSeconds();
         }
       },
       increaseHours() {

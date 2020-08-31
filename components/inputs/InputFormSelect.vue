@@ -7,9 +7,9 @@
     plain
     v-bind="{ ...$attrs.props, options: [] }"
   >
-    <template v-for="o in $attrs.props.options">
-      <option :value="o.value" v-if="typeof o === 'object'">{{ o.text | translate }}</option>
-      <option :value="o" v-else>{{ o }}</option>
+    <template v-for="(o, i) in $attrs.props.options">
+      <option :value="o.value" v-if="typeof o === 'object'" :key="`option_${i}`">{{ o.text | translate }}</option>
+      <option :value="o" v-else :key="`option_${i}`">{{ o }}</option>
     </template>
   </b-form-select>
 </template>
@@ -20,5 +20,11 @@
   export default {
     name: 'InputFormSelect',
     mixins: [InputMixin],
+    props: {
+      options: {
+        type: Array,
+        default: () => [],
+      },
+    }
   }
 </script>
