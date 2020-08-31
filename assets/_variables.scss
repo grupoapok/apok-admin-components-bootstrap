@@ -1,8 +1,7 @@
 //Custom Bootstrap Variables
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/bootstrap";
-@import "components";
+@import "~bootstrap/scss/mixins";
 
 $multiselect-chip-bg: $primary;
 $multiselect-chip-text: color-yiq($multiselect-chip-bg);
