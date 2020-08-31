@@ -73,9 +73,11 @@
 
 <script>
   import { format } from 'date-fns'
+  import InputMixin from "./InputMixin";
 
   export default {
     name: "InputFormTimePicker",
+    mixins: [InputMixin],
     inheritAttrs: false,
     data() {
       return {

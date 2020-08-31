@@ -75,9 +75,11 @@
     set,
     getMonth
   } from "date-fns";
+  import InputMixin from "./InputMixin";
 
   export default {
     name: "InputFormCalendar",
+    mixins: [InputMixin],
     data() {
       return {
         value: new Date(),
@@ -86,10 +88,9 @@
       };
     },
     props: {
-      readonly: Boolean,
-      state: {
-        type: String,
-        default: null
+      readonly: {
+        type: Boolean,
+        default: false,
       },
       canSelectYear: {
         type: Boolean,

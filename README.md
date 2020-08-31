@@ -33,6 +33,7 @@ html tag on the whole app, while using variations on the same component or even 
 Here's an example of a Button component being called by its renderer tag equivalent and making use of it just as the
 component itself:
 
+
 ```xhtml
 <!-- On a Vue component template -->
 <template>

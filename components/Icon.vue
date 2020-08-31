@@ -1,7 +1,7 @@
 <template>
-  <font-awesome-icon :icon="icon" :spin="spin" v-bind="$attrs" v-if="!materialIcon && !mdi"/>
+  <font-awesome-icon :icon="icon" :spin="spin" v-bind="$attrs" v-if="!material && !mdi"/>
   <i :class="['mdi', `mdi-${icon}`, `mdi-${$attrs.size}`, spin && 'mdi-spin']" v-else-if="mdi"/>
-  <i :class="`material-icons${outlined ? '-outlined' : ''}`" v-else-if="materialIcon">{{ icon }}</i>
+  <i :class="`material-icons${outlined ? '-outlined' : ''}`" v-else-if="material">{{ icon }}</i>
   <unicon :name="icon" :icon-style="iconStyle" v-bind="$attrs" v-else-if="unicons"/>
 </template>
 
@@ -25,7 +25,7 @@
         type: Boolean,
         default: false
       },
-      materialIcon: {
+      material: {
         type: Boolean,
         default: false
       },
