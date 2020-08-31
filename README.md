@@ -33,21 +33,22 @@ html tag on the whole app, while using variations on the same component or even 
 Here's an example of a Button component being called by its renderer tag equivalent and making use of it just as the
 component itself:
 
-```vue
+
+```xhtml
 <!-- On a Vue component template -->
 <template>
 <!-- Passing props the same as in the IconButton.vue component-->
-    <button-renderer icon="plus" type="is-success">
+    <button-renderer icon="plus" type="success">
         Add to cart
     </button-renderer>
 </template>
 ```
 
-The same logic applies to al renderers listed [here](https://github.com/grupoapok/apok-admin/tree/develop#renderers)
+The same logic applies to all renderers listed [here](https://github.com/grupoapok/apok-admin/tree/develop#renderers)
 
 ## Input Mixin
 
-All inputs on this package include a InputMixin.js mixin that covers most of the properties that input components may need.
+All input components on this package include a InputMixin.js mixin that covers most of the properties that input components may need.
 This mixin has the ``inheritAttrs`` attribute set to false, which does exactly
 [that](https://vuejs.org/v2/guide/components-props.html#Disabling-Attribute-Inheritance).
 Here's a list on the props included on this mixin:
@@ -154,7 +155,7 @@ and props. All components are made with [Bootstrap](https://getbootstrap.com/doc
         | ``secondsLabel`` | Label for seconds display | String | 'Seconds |
         | ``readonly`` | Sets read only state on input | Boolean | false |
         | ``state`` | Error state | String | null |
-        | ``buttonsVariant`` | Variant of buttons' color | String | 'is-info' |
+        | ``buttonsVariant`` | Variant of buttons' color | String | 'info' |
         | ``hoursInterval`` | Increment / Decrement interval for hours | Number | 1 |
         | ``minutesInterval`` | Increment / Decrement interval for minutes | Number | 1 |
         | ``secondsInterval`` | Increment / Decrement interval for seconds | Number | 1 |
@@ -282,13 +283,13 @@ and props. All components are made with [Bootstrap](https://getbootstrap.com/doc
         | ``showDivider`` | Render a divider between fields and buttons | Boolean | true |
         | ``buttonsAlignment`` | Alignment of buttons | String | 'left' |
         | ``submitButtonText`` | Label on submit button | String | 'actions.save' |
-        | ``submitButtonVariant`` | Color variant of submit button | String | 'is-primary' |
+        | ``submitButtonVariant`` | Color variant of submit button | String | 'primary' |
         | ``submitButtonIcon`` | Icon of the submit button | Object | { icon: 'check' } |
         | ``cancelButtonText`` | Label on cancel button | String | 'actions.cancel' |
         | ``cancelButtonVariant`` | Color variant of cancel button | String | null |
         | ``cancelButtonIcon`` | Icon of the cancel button | Object | { icon: 'angle-left' } |
         | ``backButtonText`` | Label on back button | String | 'actions.goBack' |
-        | ``backButtonVariant`` | Color variant of back button | String | 'is-info' |
+        | ``backButtonVariant`` | Color variant of back button | String | 'info' |
         | ``backButtonIcon`` | Icon of the back button | Object | { icon: 'angle-left' } |
         | ``showCancel`` | Show cancel button | Boolean | true |
         | ``showSubmit`` | Show submit button | Boolean | true |
